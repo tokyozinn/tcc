@@ -28,7 +28,7 @@ export function Splash() {
         async function prepare() {
             try {
                 await Font.loadAsync(customFonts);
-                await new Promise(resolve => setTimeout(resolve, 500));
+                await new Promise(resolve => setTimeout(resolve, 3000));
             } catch (e) {
                 console.warn(e);
             } finally {
