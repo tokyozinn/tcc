@@ -10,6 +10,7 @@ import {
 import { ThemeProvider } from 'styled-components';
 import theme from '../../global/styles/theme';
 import { Dashboard } from '../Dashboard';
+import { Register } from '../Register';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -51,7 +52,8 @@ export function Splash() {
     return (
         <View onLayout={onLayoutRootView}>
             <ThemeProvider theme={theme}>
-                <Dashboard />
+                {/* <Dashboard /> */}
+                <Register/>
             </ThemeProvider>
         </View>
     )
