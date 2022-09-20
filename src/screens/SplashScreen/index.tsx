@@ -29,7 +29,7 @@ export function Splash() {
         async function prepare() {
             try {
                 await Font.loadAsync(customFonts);
-                await new Promise(resolve => setTimeout(resolve, 3000));
+                await new Promise(resolve => setTimeout(resolve, 1000));
             } catch (e) {
                 console.warn(e);
             } finally {
@@ -50,7 +50,7 @@ export function Splash() {
     }
 
     return (
-        <View onLayout={onLayoutRootView}>
+        <View style={{flex:1}} onLayout={onLayoutRootView}>
             <ThemeProvider theme={theme}>
                 {/* <Dashboard /> */}
                 <Register/>
