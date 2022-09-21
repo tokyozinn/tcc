@@ -11,6 +11,7 @@ import { ThemeProvider } from 'styled-components';
 import theme from '../../global/styles/theme';
 import { Dashboard } from '../Dashboard';
 import { Register } from '../Register';
+import { CategorySelect } from '../../screens/CategorySelect';
 
 
 SplashScreen.preventAutoHideAsync();
