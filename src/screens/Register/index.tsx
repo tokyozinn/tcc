@@ -70,7 +70,7 @@ export function Register() {
                     </TransactionTypeButtons>
 
                     <CategorySelectButton 
-                        title= "Categoria"
+                        title= {category.name}
                         onPress={handleOpenSelectCategory}
                     />
 
