@@ -9,9 +9,8 @@ import {
 } from '@expo-google-fonts/poppins'
 import { ThemeProvider } from 'styled-components';
 import theme from '../../global/styles/theme';
-import { Dashboard } from '../Dashboard';
-import { Register } from '../Register';
-import { CategorySelect } from '../../screens/CategorySelect';
+import { AppRoutes } from '../../routes/app.routes';
+import { NavigationContainer } from '@react-navigation/native';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -51,12 +50,13 @@ export function Splash() {
     }
 
     return (
-        <View style={{flex:1}} onLayout={onLayoutRootView}>
-            <ThemeProvider theme={theme}>
-                {/* <Dashboard /> */}
-                <Register/>
-            </ThemeProvider>
-        </View>
+        <ThemeProvider theme={theme}>
+            <NavigationContainer>
+                <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+                    <AppRoutes />
+                </View>
+            </NavigationContainer>
+        </ThemeProvider>
     )
 }
 
