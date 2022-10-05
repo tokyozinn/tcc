@@ -53,13 +53,16 @@ export function Splash() {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <NavigationContainer>
-                <AppRoutes />
-            </NavigationContainer>
-            {/* <Dashboard /> */}
-            {/* <Register/> */}
-        </ThemeProvider>
+        <View style={{flex:1}} onLayout={onLayoutRootView}>
+
+            <ThemeProvider theme={theme}>
+                <NavigationContainer>
+                    <AppRoutes />
+                </NavigationContainer>
+                {/* <Dashboard /> */}
+                {/* <Register/> */}
+            </ThemeProvider>
+        </View>
     )
 }
 
