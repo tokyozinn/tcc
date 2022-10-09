@@ -53,7 +53,7 @@ export function Splash() {
     }
 
     return (
-        <View style={{flex:1}} onLayout={onLayoutRootView}>
+        <View style={{flex: 1}} onLayout={onLayoutRootView}>
 
             <ThemeProvider theme={theme}>
                 <NavigationContainer>

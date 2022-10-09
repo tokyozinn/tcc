@@ -19,18 +19,17 @@ export const Header = styled.View`
 `;
 
 export const Title = styled.Text`
-font-family: ${({ theme }) => theme.fonts.regular};
-color: ${({ theme}) => theme.colors.shape};
+    font-family: ${({ theme }) => theme.fonts.regular};
+    color: ${({ theme}) => theme.colors.shape};
 
-font-size: ${RFValue(18)}px;
+    font-size: ${RFValue(18)}px;
 `;
 
 export const Form = styled.View`
     flex: 1;
-    justify-content: space-between;
     width: 100%;
+    justify-content: space-between;
     padding: 24px;
-
 `;
 
 export const Fields = styled.View``;
