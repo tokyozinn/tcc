@@ -9,9 +9,6 @@ import {
 } from '@expo-google-fonts/poppins'
 import { ThemeProvider } from 'styled-components';
 import theme from '../../global/styles/theme';
-import { Dashboard } from '../Dashboard';
-import { Register } from '../Register';
-import { CategorySelect } from '../../screens/CategorySelect';
 import { NavigationContainer } from '@react-navigation/native'
 import { AppRoutes } from '../../routes/app.routes'
 
@@ -54,13 +51,10 @@ export function Splash() {
 
     return (
         <View style={{flex: 1}} onLayout={onLayoutRootView}>
-
             <ThemeProvider theme={theme}>
                 <NavigationContainer>
                     <AppRoutes />
                 </NavigationContainer>
-                {/* <Dashboard /> */}
-                {/* <Register/> */}
             </ThemeProvider>
         </View>
     )
