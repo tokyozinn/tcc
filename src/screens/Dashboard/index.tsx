@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { ActivityIndicator } from 'react-native';
 import { HighlightCard } from "../../components/HighlightCard";
 import { TransactionCard, TransactionCardProps } from "../../components/TransactionCard";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme } from 'styled-components';
 
 import {
     Container,
@@ -17,10 +19,12 @@ import {
     Transactions,
     Title,
     TransactionList,
-    LogoutButton
+    LogoutButton,
+    LoadContainer
 } from "./styles";
 import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
+import theme from "../../global/styles/theme";
 
 export interface DataListProps extends TransactionCardProps {
     id: string;
@@ -37,6 +41,7 @@ interface HighlightData {
 }
 
 export function Dashboard() {
+    const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<DataListProps[]>([]);
     const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
 
@@ -102,6 +107,7 @@ export function Dashboard() {
                     })
             }
         })
+        setIsLoading(false);
     };
 
 
@@ -122,50 +128,53 @@ export function Dashboard() {
 
     return (
         <Container>
+            {
+                isLoading ? <LoadContainer><ActivityIndicator color={theme.colors.primary} /></LoadContainer> :
+                    <>
+                        <Header>
+                            <UserWrapper>
+                                <UserInfo>
+                                    <Photo source={{ uri: 'https://pps.whatsapp.net/v/t61.24694-24/258636966_2714580028845063_5182806451043426251_n.jpg?ccb=11-4&oh=01_AVwj_sMeMQ85YrrWHfSN4yvGrGSmTmVZnOzFwn05Hw1OZQ&oe=632432D4' }} />
+                                    <User>
+                                        <UserGreeting>Olá,</UserGreeting>
+                                        <UserName>Lucas Torres</UserName>
+                                    </User>
+                                </UserInfo>
+                                <LogoutButton onPress={() => clearDataBase()}>
+                                    <Icon name="power" />
+                                </LogoutButton>
+                            </UserWrapper>
+                        </Header>
 
-            <Header>
-                <UserWrapper>
-                    <UserInfo>
-                        <Photo source={{ uri: 'https://pps.whatsapp.net/v/t61.24694-24/258636966_2714580028845063_5182806451043426251_n.jpg?ccb=11-4&oh=01_AVwj_sMeMQ85YrrWHfSN4yvGrGSmTmVZnOzFwn05Hw1OZQ&oe=632432D4' }} />
-                        <User>
-                            <UserGreeting>Olá,</UserGreeting>
-                            <UserName>Lucas Torres</UserName>
-                        </User>
-                    </UserInfo>
-                    <LogoutButton onPress={() => clearDataBase()}>
-                        <Icon name="power" />
-                    </LogoutButton>
-                </UserWrapper>
-            </Header>
+                        <HighlightCards>
+                            <HighlightCard
+                                type="up"
+                                title="Entradas"
+                                amount={highlightData?.entries?.amount}
+                                lastTransaction="Última entrada dia 13 de maio" />
+                            <HighlightCard
+                                type="down"
+                                title="Saídas "
+                                amount={highlightData?.expenditures?.amount}
+                                lastTransaction="Última entrada dia 13 de maio" />
+                            <HighlightCard
+                                type="total"
+                                title="Total"
+                                amount={highlightData?.total?.amount}
+                                lastTransaction="Última entrada dia 13 de maio" />
+                        </HighlightCards>
 
-            <HighlightCards>
-                <HighlightCard
-                    type="up"
-                    title="Entradas"
-                    amount={highlightData?.entries?.amount}
-                    lastTransaction="Última entrada dia 13 de maio" />
-                <HighlightCard
-                    type="down"
-                    title="Saídas "
-                    amount={highlightData?.expenditures?.amount}
-                    lastTransaction="Última entrada dia 13 de maio" />
-                <HighlightCard
-                    type="total"
-                    title="Total"
-                    amount={highlightData?.total?.amount}
-                    lastTransaction="Última entrada dia 13 de maio" />
-            </HighlightCards>
+                        <Transactions>
+                            <Title>Listagem</Title>
 
-            <Transactions>
-                <Title>Listagem</Title>
-
-                <TransactionList
-                    data={data}
-                    keyExtractor={item => item.id}
-                    renderItem={({ item }) => <TransactionCard data={item} />}
-                />
-            </Transactions>
-
+                            <TransactionList
+                                data={data}
+                                keyExtractor={item => item.id}
+                                renderItem={({ item }) => <TransactionCard data={item} />}
+                            />
+                        </Transactions>
+                    </>
+            }
         </Container>
 
     )
