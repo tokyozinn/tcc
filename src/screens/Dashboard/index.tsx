@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { HighlightCard } from "../../components/HighlightCard";
 import { TransactionCard, TransactionCardProps } from "../../components/TransactionCard";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,6 +19,8 @@ import {
     TransactionList,
     LogoutButton
 } from "./styles";
+import { Alert } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 export interface DataListProps extends TransactionCardProps {
     id: string;
@@ -60,9 +62,19 @@ export function Dashboard() {
 
     }
 
+    async function clearDataBase() {
+        const collectionKey = '@gofinances:transactions';
+        AsyncStorage.removeItem(collectionKey);
+        Alert.alert('database cleared');
+    }
+
     useEffect(() => {
         loadTransaction();
     }, []);
+
+    useFocusEffect(useCallback(() => {
+        loadTransaction()},[]
+    ));
 
     return (
         <Container>
@@ -76,7 +88,7 @@ export function Dashboard() {
                             <UserName>Lucas Torres</UserName>
                         </User>
                     </UserInfo>
-                    <LogoutButton onPress={() => { }}>
+                    <LogoutButton onPress={() => clearDataBase()}>
                         <Icon name="power" />
                     </LogoutButton>
                 </UserWrapper>
