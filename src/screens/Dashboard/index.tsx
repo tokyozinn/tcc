@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { HighlightCard } from "../../components/HighlightCard";
 import { TransactionCard, TransactionCardProps } from "../../components/TransactionCard";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from 'styled-components';
 
 import {
     Container,
@@ -20,7 +19,8 @@ import {
     Title,
     TransactionList,
     LogoutButton,
-    LoadContainer
+    LoadContainer,
+    EmptyListText,
 } from "./styles";
 import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -167,11 +167,15 @@ export function Dashboard() {
                         <Transactions>
                             <Title>Listagem</Title>
 
-                            <TransactionList
-                                data={data}
-                                keyExtractor={item => item.id}
-                                renderItem={({ item }) => <TransactionCard data={item} />}
-                            />
+                            {
+                                data.length > 0 ? <TransactionList
+                                    data={data}
+                                    keyExtractor={item => item.id}
+                                    renderItem={({ item }) => <TransactionCard data={item} />}
+                                /> :
+                                    <EmptyListText>Ainda não existem transações lançadas.</EmptyListText>
+                            }
+
                         </Transactions>
                     </>
             }

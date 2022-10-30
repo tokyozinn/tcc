@@ -98,4 +98,10 @@ export const LoadContainer = styled.View`
     flex: 1;
     justify-content: center;
     align-items: center;
- `
+ `;
+
+export const EmptyListText = styled.Text`
+    font-family: ${({ theme }) => theme.fonts.regular};
+    font-size: ${RFValue(14)}px;
+    color: ${({ theme }) => theme.colors.attention_light};
+ `;
