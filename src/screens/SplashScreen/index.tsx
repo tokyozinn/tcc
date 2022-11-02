@@ -11,6 +11,9 @@ import { ThemeProvider } from 'styled-components';
 import theme from '../../global/styles/theme';
 import { NavigationContainer } from '@react-navigation/native'
 import { AppRoutes } from '../../routes/app.routes'
+import { Login } from '../Login';
+import { AuthRoutes } from '../../routes/auth.routes';
+import { Routes } from '../../routes';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -52,9 +55,7 @@ export function Splash() {
     return (
         <View style={{flex: 1}} onLayout={onLayoutRootView}>
             <ThemeProvider theme={theme}>
-                <NavigationContainer>
-                    <AppRoutes />
-                </NavigationContainer>
+                    <Routes />
             </ThemeProvider>
         </View>
     )

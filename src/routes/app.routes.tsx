@@ -8,6 +8,7 @@ import { Register } from '../screens/Register';
 import { useTheme } from 'styled-components'
 import { MaterialIcons } from '@expo/vector-icons'
 import { KeyboardAvoidingView } from 'react-native'
+import { Login } from "../screens/Login";
 
 
 export function AppRoutes() {
@@ -15,8 +16,15 @@ export function AppRoutes() {
     const theme = useTheme();
 
     return (
-        <KeyboardAvoidingView style={{flex: 1}}>
+        <KeyboardAvoidingView style={{ flex: 1 }}>
 
+            <Screen
+                name="Login"
+                component={Login}
+                options={{
+                    tabBarIconStyle: { display: "none" }
+                }}
+            />
             <Navigator
                 screenOptions={{
                     tabBarHideOnKeyboard: true,
@@ -27,7 +35,7 @@ export function AppRoutes() {
                     tabBarStyle: {
                         height: 75,
                         paddingVertical: Platform.OS === 'ios' ? 20 : 0,
-                        
+
                     }
                 }}
             >
