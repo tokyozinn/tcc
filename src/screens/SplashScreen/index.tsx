@@ -9,12 +9,9 @@ import {
 } from '@expo-google-fonts/poppins'
 import { ThemeProvider } from 'styled-components';
 import theme from '../../global/styles/theme';
-import { NavigationContainer } from '@react-navigation/native'
-import { AppRoutes } from '../../routes/app.routes'
-import { Login } from '../Login';
-import { AuthRoutes } from '../../routes/auth.routes';
 import { Routes } from '../../routes';
 
+import { AuthProvider } from '../../hooks/auth';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -53,9 +50,11 @@ export function Splash() {
     }
 
     return (
-        <View style={{flex: 1}} onLayout={onLayoutRootView}>
+        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
             <ThemeProvider theme={theme}>
+                <AuthProvider>
                     <Routes />
+                </AuthProvider>
             </ThemeProvider>
         </View>
     )

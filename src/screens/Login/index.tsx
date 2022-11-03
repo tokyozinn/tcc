@@ -1,22 +1,26 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, Image, Text, View } from 'react-native';
+import React, { useContext, useState } from "react";
+import { Alert, View } from 'react-native';
 
 import {
     Container,
     UpperView,
     LowerView,
-    LoadContainer,
-    Photo,
 } from "./styles";
-import theme from "../../global/styles/theme";
-import { Button } from "../../components/Form/Button";
 import GoogleSVG from '../../assets/google-icon.svg';
 import LogoSVG from '../../assets/main-logo.svg';
 import { RFValue } from "react-native-responsive-fontsize";
 import { SignInButton } from "../../components/SignInButton";
+import { useAuth } from "../../hooks/auth";
 
 export function Login() {
-    const [isLoading, setIsLoading] = useState(false);
+    const { signIn } = useAuth();
+    async function handleSignIn() {
+        try {
+            await signIn();
+        } catch (error) {
+            Alert.alert('error');
+        }
+    }
 
     return (
         <Container>
@@ -32,9 +36,10 @@ export function Login() {
             </UpperView>
             <LowerView>
                 <SignInButton
+                    onPress={handleSignIn}
                     title="Entrar com Conta Google"
                     svg={GoogleSVG}
-                    ></SignInButton>
+                ></SignInButton>
             </LowerView>
 
         </Container>

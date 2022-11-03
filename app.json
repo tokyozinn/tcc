@@ -2,6 +2,7 @@
   "expo": {
     "name": "tcc",
     "slug": "tcc",
+    "scheme": "tcc",
     "version": "1.0.0",
     "android":{"softwareKeyboardLayoutMode": "pan"},
     "assetBundlePatterns": [
