@@ -1,5 +1,8 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import * as AuthSession from 'expo-auth-session';
+
+import { CLIENT_ID, REDIRECT_URI } from 'react-native-dotenv';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -15,45 +18,76 @@ interface User {
 interface IAuthContextData {
     user: User;
     signIn(): Promise<void>;
+    signOut(): Promise<void>;
+}
+
+interface AuthorizationResponse {
+    params: {
+        access_token: string;
+    }
+    type: string;
 }
 
 const AuthContext = createContext({} as IAuthContextData);
 
 
 function AuthProvider({ children }: AuthProviderProps) {
-    const user = {
-        id: '213412',
-        name: 'Andre',
-        email: 'adfasd'
-    }
+    const [user, setUser] = useState<User>({} as User);
+    const userCollectionKey = "@gofinances:user";
+    const [isLoading, setIsLoading] = useState(true);
 
     async function signIn() {
         try {
-            const CLIENT_ID = '464889447980-uf6kd6eus96s2vkdms4gei091s06qn85.apps.googleusercontent.com';
-            const REDIRECT_URI = 'https://auth.expo.io/@tokyozinn/tcc';
             const RESPONSE_TYPE = 'token';
             const SCOPE = encodeURI('profile email');
-    
+
             const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
-            
-            const response = await AuthSession.startAsync({ authUrl })
-            console.log(authUrl);
-            console.log(response);
+
+            const { type, params} = await AuthSession.startAsync({ authUrl }) as AuthorizationResponse;
+        
+            if(type === 'success'){
+                const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
+                const userInfo = await response.json();
+                const userLoggedIn = {
+                    id: String(userInfo.id),
+                    email: userInfo.email!,
+                    name: userInfo.given_name!,
+                    photo: userInfo.picture!
+                }
+                setUser(userLoggedIn);
+                await AsyncStorage.setItem(userCollectionKey, JSON.stringify(userLoggedIn));
+            }
 
         } catch (error) {
-            throw new Error();
+            throw new Error(error as string);
         }
     }
 
-    https://accounts.google.com/o/oauth2/v2/auth?client_id=464889447980-uf6kd6eus96s2vkdms4gei091s06qn85.apps.googleusercontent.com&redirect_uri=https://auth.expo.io/@tokyozinn/tcc&response_type=token&scope=profile%20email
-return (
-    <AuthContext.Provider value={{
-        user,
-        signIn
-    }}>
-        {children}
-    </AuthContext.Provider>
-);
+    async function signOut() {
+        setUser({} as User);
+        await AsyncStorage.removeItem(userCollectionKey);
+    }
+
+    useEffect(() => {
+        async function loadUserData() {
+            const userSaved = await AsyncStorage.getItem(userCollectionKey);
+            if(userSaved){
+                const userLogged = JSON.parse(userSaved) as User;
+                setUser(userLogged);
+            }
+            setIsLoading(false);
+        }
+    }, []);
+
+    return (
+        <AuthContext.Provider value={{
+            user,
+            signIn,
+            signOut
+        }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
 
 function useAuth() {

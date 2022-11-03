@@ -25,6 +25,7 @@ import {
 import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import theme from "../../global/styles/theme";
+import { useAuth } from "../../hooks/auth";
 
 export interface DataListProps extends TransactionCardProps {
     id: string;
@@ -44,6 +45,8 @@ export function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<DataListProps[]>([]);
     const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
+
+    const { signOut } = useAuth();
 
     async function loadTransaction() {
         const collectionKey = '@gofinances:transactions';
@@ -140,7 +143,7 @@ export function Dashboard() {
                                         <UserName>Lucas Torres</UserName>
                                     </User>
                                 </UserInfo>
-                                <LogoutButton onPress={() => clearDataBase()}>
+                                <LogoutButton onPress={() => signOut()}>
                                     <Icon name="power" />
                                 </LogoutButton>
                             </UserWrapper>
