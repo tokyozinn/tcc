@@ -46,6 +46,7 @@ export function Dashboard() {
     const [data, setData] = useState<DataListProps[]>([]);
     const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
 
+    const { user } = useAuth();
     const { signOut } = useAuth();
 
     async function loadTransaction() {
@@ -137,10 +138,10 @@ export function Dashboard() {
                         <Header>
                             <UserWrapper>
                                 <UserInfo>
-                                    <Photo source={{ uri: 'https://pps.whatsapp.net/v/t61.24694-24/258636966_2714580028845063_5182806451043426251_n.jpg?ccb=11-4&oh=01_AVwj_sMeMQ85YrrWHfSN4yvGrGSmTmVZnOzFwn05Hw1OZQ&oe=632432D4' }} />
+                                    <Photo source={{ uri: user.photo }} />
                                     <User>
                                         <UserGreeting>Olá,</UserGreeting>
-                                        <UserName>Lucas Torres</UserName>
+                                        <UserName>{user.name}</UserName>
                                     </User>
                                 </UserInfo>
                                 <LogoutButton onPress={() => signOut()}>
