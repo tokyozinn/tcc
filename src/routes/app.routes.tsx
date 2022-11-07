@@ -9,6 +9,7 @@ import { useTheme } from 'styled-components'
 import { MaterialIcons } from '@expo/vector-icons'
 import { KeyboardAvoidingView } from 'react-native'
 import { Login } from "../screens/Login";
+import { VaccineRegister } from "../screens/VaccineRegister";
 
 
 export function AppRoutes() {
@@ -35,7 +36,6 @@ export function AppRoutes() {
                     tabBarStyle: {
                         height: 75,
                         paddingVertical: Platform.OS === 'ios' ? 20 : 0,
-
                     }
                 }}
             >
@@ -54,7 +54,7 @@ export function AppRoutes() {
                 />
                 <Screen
                     name="Cadastrar"
-                    component={Register}
+                    component={VaccineRegister}
                     options={{
                         tabBarIcon: (({ size, color }) =>
                             <MaterialIcons
