@@ -26,6 +26,7 @@ import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import theme from "../../global/styles/theme";
 import { useAuth } from "../../hooks/auth";
+import { AnimalCard } from "../../components/AnimalCard";
 
 export interface DataListProps extends TransactionCardProps {
     id: string;
@@ -167,6 +168,9 @@ export function Dashboard() {
                                 amount={highlightData?.total?.amount}
                                 lastTransaction="Última entrada dia 13 de maio" />
                         </HighlightCards>
+                        <AnimalCard 
+                        name='treco'
+                        specie='dog'/>
 
                         <Transactions>
                             <Title>Listagem</Title>
