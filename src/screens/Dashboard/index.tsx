@@ -15,6 +15,7 @@ import {
     UserName,
     Icon,
     HighlightCards,
+    AnimalCards,
     Transactions,
     Title,
     TransactionList,
@@ -151,7 +152,7 @@ export function Dashboard() {
                             </UserWrapper>
                         </Header>
 
-                        <HighlightCards>
+                        {/* <HighlightCards>
                             <HighlightCard
                                 type="up"
                                 title="Entradas"
@@ -167,12 +168,16 @@ export function Dashboard() {
                                 title="Total"
                                 amount={highlightData?.total?.amount}
                                 lastTransaction="Última entrada dia 13 de maio" />
-                        </HighlightCards>
-                        <AnimalCard 
-                        name='treco'
-                        specie='dog'/>
+                        </HighlightCards> */}
 
-                        <Transactions>
+                        <AnimalCards>
+                            <AnimalCard name='Bolt' specie='dog'/>
+                            <AnimalCard name='Marlinho' specie='cat'/>
+                            <AnimalCard name='Joséfino' specie='dog'/>
+
+                        </AnimalCards>
+
+                        {/* <Transactions>
                             <Title>Listagem</Title>
 
                             {
@@ -184,7 +189,7 @@ export function Dashboard() {
                                     <EmptyListText>Ainda não existem transações lançadas.</EmptyListText>
                             }
 
-                        </Transactions>
+                        </Transactions> */}
                     </>
             }
         </Container>

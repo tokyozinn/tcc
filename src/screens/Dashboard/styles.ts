@@ -12,7 +12,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
     width: 100%;
-    height: ${RFPercentage(42)}px;
+    height: ${RFPercentage(25)}px;
     background-color: ${({ theme }) => theme.colors.primary};
     justify-content: center;
     align-items: flex-start;
@@ -105,3 +105,6 @@ export const EmptyListText = styled.Text`
     font-size: ${RFValue(14)}px;
     color: ${({ theme }) => theme.colors.attention_light};
  `;
+
+export const AnimalCards = styled.ScrollView`
+`;

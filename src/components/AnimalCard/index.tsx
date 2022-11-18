@@ -22,11 +22,11 @@ export function AnimalCard({ name, specie }: AnimalCardProps) {
         <Container>
             <IconImg>
                 {specie === 'dog' ?
-                    <CaoSVG width={RFValue(200)}
-                        height={RFValue(200)} />
+                    <CaoSVG width={RFValue(50)}
+                        height={RFValue(50)} />
                     :
-                    <GatoSVG width={RFValue(200)}
-                        height={RFValue(200)} />}
+                    <GatoSVG width={RFValue(50)}
+                        height={RFValue(50)} />}
             </IconImg>
             <Title>
                 {name}
