@@ -8,7 +8,7 @@ export const Container = styled.View`
     height: 100%;
 `;
 
-export const UpperView = styled.View`
+export const UpperView = styled.View` 
     width: 100%;
     height: ${RFPercentage(70)}px;
     justify-content: center;
