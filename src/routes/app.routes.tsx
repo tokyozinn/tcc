@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const { Navigator, Screen } = createBottomTabNavigator();
-import { Dashboard } from '../screens/Dashboard';
+import { AllAnimalsDashboard } from '../screens/AllAnimalsDashboard';
 import { Register } from '../screens/Register';
 import { useTheme } from 'styled-components'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -41,7 +41,7 @@ export function AppRoutes() {
             >
                 <Screen
                     name="Listagem"
-                    component={Dashboard}
+                    component={AllAnimalsDashboard}
                     options={{
                         tabBarIcon: (({ size, color }) =>
                             <MaterialIcons

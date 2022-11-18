@@ -89,19 +89,27 @@ export function VaccineRegister() {
             id: String(uuid.v4()),
             name: form.name,
             age: form.age,
-            category: category.key,
+            specie: category.key,
             weight: form.weight,
         }
 
-        const individualAnimalCollectionKey = `@petapp:animals`;
+
+
+        const allAnimalsCollection = `@petapp:animals`;
 
         console.log(newAnimal);
 
         try {
-            const generalAnimalRecordData = await AsyncStorage.getItem(individualAnimalCollectionKey);
-            if(generalAnimalRecordData) throw new Error(`Animal com nome "${newAnimal.name}" já existe. Por favor, cadastre com um nome diferente`);
+            const generalAnimalRecordData = await AsyncStorage.getItem(allAnimalsCollection);
+            const currentData = generalAnimalRecordData ? JSON.parse(generalAnimalRecordData) : [];
+
+            const appendedData = [
+                ...currentData,
+                newAnimal
+            ]
+            // if(generalAnimalRecordData) throw new Error(`Animal com nome "${newAnimal.name}" já existe. Por favor, cadastre com um nome diferente`);
             
-            await AsyncStorage.setItem(individualAnimalCollectionKey, JSON.stringify(newAnimal));
+            await AsyncStorage.setItem(allAnimalsCollection, JSON.stringify(appendedData));
 
             reset();
             setCategory({

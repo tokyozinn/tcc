@@ -106,5 +106,18 @@ export const EmptyListText = styled.Text`
     color: ${({ theme }) => theme.colors.attention_light};
  `;
 
-export const AnimalCards = styled.ScrollView`
+export const AnimalCards = styled.ScrollView.attrs({
+    showsVerticalScrollIndicator: false,
+    contentContainerStyle: { padding: 2 }
+})`
+    width: 100%;
+    /* position: absolute; */
+    margin-top: ${RFPercentage(1)}px;
+`;
+
+export const NewPetButton = styled.TouchableOpacity`
+background-color: black;
+height: 100px;
+position: absolute;
+width: 100%;
 `;

@@ -11,7 +11,7 @@ import {
 
 export interface AnimalCardProps {
     name: string;
-    specie: 'dog' | 'cat';
+    specie: 'Cachorro' | 'Gato';
 }
 
 interface Props {
@@ -25,7 +25,7 @@ export function AnimalCard({ data }: Props) {
     return (
         <Container>
             <IconImg>
-                {data.specie === 'dog' ?
+                {data.specie === 'Cachorro' ?
                     <CaoSVG width={RFValue(50)}
                         height={RFValue(50)} />
                     :
