@@ -27,7 +27,9 @@ import {
 
 interface FormData {
     name: string;
-    amount: string;
+    age: number;
+    weight: number;
+    specie: 'Gato' | 'Cachorro';
 }
 
 type NavigationProps = {
@@ -37,7 +39,7 @@ type NavigationProps = {
 const schema = Yup.object().shape({
     name: Yup.string()
         .required('Nome é obrigatório'),
-    amount: Yup.number().integer("Idade deve ser um número inteiro")
+    age: Yup.number().integer("Idade deve ser um número inteiro")
         .typeError('Informe um valor numérico')
         .positive('O valor não pode ser negativo')
         .required('O valor é obrigatório'),
@@ -52,7 +54,6 @@ const schema = Yup.object().shape({
 import { VaccineCategorySelect } from "../VaccineCategorySelect";
 
 export function VaccineRegister() {
-    const [transactionType, setTransactionType] = useState('');
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
     const [category, setCategory] = useState({
@@ -71,10 +72,6 @@ export function VaccineRegister() {
         resolver: yupResolver(schema)
     });
 
-    function handleTransactionTypeSelect(type: 'positive' | 'negative') {
-        setTransactionType(type);
-    }
-
     function handleOpenSelectCategory() {
         setCategoryModalOpen(true);
     }
@@ -83,34 +80,30 @@ export function VaccineRegister() {
         setCategoryModalOpen(false);
     }
 
-    const collectionKey = '@gofinances:transactions';
+    
 
     async function handleVaccineRegister(form: Partial<FormData>) {
-        if (!transactionType)
-            return Alert.alert('Selecione o tipo da transacao');
         if (category.key === 'category')
             return Alert.alert('Selecione a categoria');
-        const newTransaction = {
+        const newAnimal = {
             id: String(uuid.v4()),
             name: form.name,
-            amount: form.amount,
-            type: transactionType,
+            age: form.age,
             category: category.key,
-            date: new Date()
+            weight: form.weight,
         }
 
-        try {
-            const data = await AsyncStorage.getItem(collectionKey);
-            const currentData = data ? JSON.parse(data) : [];
+        const individualAnimalCollectionKey = `@petapp:animals`;
 
-            const dataFormatted = [
-                ...currentData,
-                newTransaction
-            ]
-            await AsyncStorage.setItem(collectionKey, JSON.stringify(dataFormatted));
+        console.log(newAnimal);
+
+        try {
+            const generalAnimalRecordData = await AsyncStorage.getItem(individualAnimalCollectionKey);
+            if(generalAnimalRecordData) throw new Error(`Animal com nome "${newAnimal.name}" já existe. Por favor, cadastre com um nome diferente`);
+            
+            await AsyncStorage.setItem(individualAnimalCollectionKey, JSON.stringify(newAnimal));
 
             reset();
-            setTransactionType('');
             setCategory({
                 key: 'category',
                 name: 'Categoria'
@@ -144,11 +137,11 @@ export function VaccineRegister() {
                             error={errors.name?.message}
                         />
                         <InputForm
-                            name="amount"
+                            name="age"
                             control={control}
                             placeholder="Idade"
                             keyboardType="number-pad"
-                            error={errors.amount?.message}
+                            error={errors.age?.message}
                         />
 
                         <CategorySelectButton 

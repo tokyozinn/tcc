@@ -16,66 +16,119 @@ import {
     Icon,
     HighlightCards,
     AnimalCards,
+    Transactions,
+    Title,
+    TransactionList,
     LogoutButton,
     LoadContainer,
     EmptyListText,
-    AnimalsList,
 } from "./styles";
 import { Alert } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import theme from "../../global/styles/theme";
 import { useAuth } from "../../hooks/auth";
-import { AnimalCard, AnimalCardProps } from "../../components/AnimalCard";
+import { AnimalCard } from "../../components/AnimalCard";
 
-export interface AnimalListProps extends AnimalCardProps {
+export interface DataListProps extends TransactionCardProps {
     id: string;
 }
 
-export function Dashboard() {
+interface HighlightProps {
+    amount: string;
+}
+
+interface HighlightData {
+    entries: HighlightProps;
+    expenditures: HighlightProps;
+    total: HighlightProps;
+}
+
+export function Dashboardsd() {
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState<AnimalListProps[]>([]);
+    const [data, setData] = useState<DataListProps[]>([]);
+    const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData);
 
     const { user } = useAuth();
     const { signOut } = useAuth();
 
-    async function loadAllAnimals() {
-        const collectionKey = '@petapp:animals';
+    async function loadTransaction() {
+        const collectionKey = '@gofinances:transactions';
         const response = await AsyncStorage.getItem(collectionKey);
-        const allAnimals = response ? JSON.parse(response) : [];
-        console.log(allAnimals);
-        const a : AnimalListProps[] = allAnimals.map((e : AnimalCardProps) => {
-            return {id : 1,
-            name : e.name,
-            specie : e.specie}
-        } )
+        const transactions = response ? JSON.parse(response) : [];
 
-        console.log(a);
+        let entriesSum = 0;
+        let expendituresSum = 0;
 
-        // const allAnimalsFormatted: AnimalListProps[] = allAnimals
-        //     .map((pet: AnimalListProps) => {
-        //         return {
-        //             name: pet.name,
-        //             specie: 'dog',
-        //         }
-        //     })
-        // setData(allAnimalsFormatted);
-    
+        const transactionsFormatted: DataListProps[] = transactions
+            .map((item: DataListProps) => {
+
+                if (item.type === 'positive') {
+                    entriesSum += Number(item.amount);
+                };
+
+                if (item.type === 'negative') {
+                    expendituresSum += Number(item.amount);
+                };
+
+                const amount = Number(item.amount)
+                    .toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    });
+
+                const date = Intl.DateTimeFormat('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
+                }).format(new Date(item.date));
+
+                return {
+                    id: item.id,
+                    name: item.name,
+                    amount,
+                    type: item.type,
+                    category: item.category,
+                    date,
+                }
+            })
+        setData(transactionsFormatted);
+        setHighlightData({
+            entries: {
+                amount: entriesSum.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                })
+            },
+            expenditures: {
+                amount: expendituresSum.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                })
+            },
+            total: {
+                amount:
+                    (entriesSum - expendituresSum).toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    })
+            }
+        })
         setIsLoading(false);
     };
 
 
     async function clearDataBase() {
-        const collectionKey = '@petapp:animals';
+        const collectionKey = '@gofinances:transactions';
         AsyncStorage.removeItem(collectionKey);
         Alert.alert('database cleared');
     }
 
     useEffect(() => {
-        loadAllAnimals();
+        loadTransaction();
     }, []);
 
     useFocusEffect(useCallback(() => {
-        loadAllAnimals()
+        loadTransaction()
     }, []
     ));
 
@@ -93,7 +146,7 @@ export function Dashboard() {
                                         <UserName>{user.name}</UserName>
                                     </User>
                                 </UserInfo>
-                                <LogoutButton onPress={() => clearDataBase()}>
+                                <LogoutButton onPress={() => signOut()}>
                                     <Icon name="power" />
                                 </LogoutButton>
                             </UserWrapper>
@@ -117,19 +170,9 @@ export function Dashboard() {
                                 lastTransaction="Última entrada dia 13 de maio" />
                         </HighlightCards> */}
 
-                        <AnimalCards>
-                        {
-                                data.length > 0 ? <AnimalsList
-                                    data={data}
-                                    keyExtractor={item => item.id}
-                                    renderItem={({ item }) => <AnimalCard data={item} />}
-                                /> :
-                                    <EmptyListText>Ainda não existem animais cadastrados.</EmptyListText>
-                            }
+                    
 
-                        </AnimalCards>
-
-                        {/* <allAnimals>
+                        {/* <Transactions>
                             <Title>Listagem</Title>
 
                             {
@@ -141,7 +184,7 @@ export function Dashboard() {
                                     <EmptyListText>Ainda não existem transações lançadas.</EmptyListText>
                             }
 
-                        </allAnimals> */}
+                        </Transactions> */}
                     </>
             }
         </Container>

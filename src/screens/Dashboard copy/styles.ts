@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Feather } from '@expo/vector-icons';
 import { FlatList, FlatListProps } from 'react-native';
-import { AnimalListProps } from ".";
+import { DataListProps } from ".";
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 
 export const Container = styled.View`
@@ -87,8 +87,8 @@ export const Title = styled.Text`
 `;
 
 
-export const AnimalsList = styled(
-    FlatList as new (props: FlatListProps<AnimalListProps>) => FlatList<AnimalListProps>
+export const TransactionList = styled(
+    FlatList as new (props: FlatListProps<DataListProps>) => FlatList<DataListProps>
 ).attrs({
     showsVerticalScrollIndicator: false,
     contentContainerStyle: { paddingBottom: 10 },

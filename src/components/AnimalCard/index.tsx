@@ -9,19 +9,23 @@ import {
     IconImg,
 } from './styles';
 
-interface AnimalCardProps {
+export interface AnimalCardProps {
     name: string;
     specie: 'dog' | 'cat';
 }
 
+interface Props {
+    data: AnimalCardProps;
+}
 
 
-export function AnimalCard({ name, specie }: AnimalCardProps) {
+
+export function AnimalCard({ data }: Props) {
 
     return (
         <Container>
             <IconImg>
-                {specie === 'dog' ?
+                {data.specie === 'dog' ?
                     <CaoSVG width={RFValue(50)}
                         height={RFValue(50)} />
                     :
@@ -29,7 +33,7 @@ export function AnimalCard({ name, specie }: AnimalCardProps) {
                         height={RFValue(50)} />}
             </IconImg>
             <Title>
-                {name}
+                {data.name}
             </Title>
         </Container>
     )

@@ -1,7 +1,7 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
+export const Container = styled.TouchableOpacity`
     flex: 1;
     flex-direction: row;
     background-color: ${({ theme }) => theme.colors.shape};
@@ -21,6 +21,6 @@ export const Title = styled.Text`
     width: 80%;
     text-align: center;
     margin: auto 0;
-    font-size: ${RFValue(36)}px;
+    font-size: ${RFValue(20)}px;
     font-family: ${({ theme }) => theme.fonts.regular};
 `;
