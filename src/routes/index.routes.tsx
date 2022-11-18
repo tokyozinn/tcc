@@ -3,7 +3,8 @@ import React from "react";
 const { Navigator, Screen } = createStackNavigator();
 import { useTheme } from 'styled-components'
 import { createStackNavigator } from "@react-navigation/stack";
-import { Dashboard } from "../screens/Dashboard";
+import { AllAnimalsDashboard } from "../screens/AllAnimalsDashboard";
+import { VaccineRegister } from "../screens/VaccineRegister";
 
 export function IndexRoutes() {
 
@@ -17,8 +18,12 @@ export function IndexRoutes() {
         >
             <Screen
                 name="Listagem"
-                component={Dashboard}
+                component={AllAnimalsDashboard}
             />
+            <Screen
+                name="NovoAnimal"
+                component={VaccineRegister}
+                />
         </Navigator>
     )
 }

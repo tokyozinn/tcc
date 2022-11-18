@@ -8,6 +8,7 @@ import { getStatusBarHeight } from "react-native-iphone-x-helper";
 export const Container = styled.View`
     background-color: ${({ theme }) => theme.colors.background};
     height: 100%;
+    flex: 1;
 `;
 
 export const Header = styled.View`
@@ -17,6 +18,10 @@ export const Header = styled.View`
     justify-content: center;
     align-items: flex-start;
     flex-direction: row;
+`;
+
+export const Body = styled.View`
+    height: 100%;
 `;
 
 export const UserWrapper = styled.View`
@@ -116,8 +121,17 @@ export const AnimalCards = styled.ScrollView.attrs({
 `;
 
 export const NewPetButton = styled.TouchableOpacity`
+
 background-color: black;
-height: 100px;
-position: absolute;
+height: 12px;
+
 width: 100%;
+`;
+
+
+
+export const Footer = styled.View`
+    align-items: center;
+    width: 100%;
+    height: ${RFValue(275)}px;
 `;

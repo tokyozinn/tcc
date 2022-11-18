@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, Text, View } from 'react-native';
-import { HighlightCard } from "../../components/HighlightCard";
-import { TransactionCard, TransactionCardProps } from "../../components/TransactionCard";
+import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
@@ -14,31 +12,42 @@ import {
     UserGreeting,
     UserName,
     Icon,
-    HighlightCards,
     AnimalCards,
     LogoutButton,
     LoadContainer,
     EmptyListText,
     AnimalsList,
-    NewPetButton,
+    Footer,
+    Body,
+
 } from "./styles";
 import { Alert } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import theme from "../../global/styles/theme";
 import { useAuth } from "../../hooks/auth";
 import { AnimalCard, AnimalCardProps } from "../../components/AnimalCard";
-import { Button } from "../../components/Form/Button";
+import { AddPetButton } from "../../components/AddPetButton";
 
 export interface AnimalListProps extends AnimalCardProps {
     id: string;
+}
+
+type NavigationProps = {
+    navigate:(screen:string) => void;
 }
 
 export function AllAnimalsDashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<AnimalListProps[]>([]);
 
+    const navigator = useNavigation<NavigationProps>();
+
     const { user } = useAuth();
     const { signOut } = useAuth();
+
+    function handleRegisterClick() {
+        navigator.navigate('NovoAnimal')
+    }
 
     async function loadAllAnimals() {
 
@@ -92,22 +101,28 @@ export function AllAnimalsDashboard() {
                                 </LogoutButton>
                             </UserWrapper>
                         </Header>
+                        <Body>
+                            <AnimalCards>
+                                {
+                                    data.length > 0 ? <AnimalsList
+                                        data={data}
+                                        keyExtractor={item => item.id}
+                                        renderItem={({ item }) => <AnimalCard data={item} />}
+                                    /> :
+                                        <EmptyListText>Ainda não existem animais cadastrados.</EmptyListText>
+                                }
 
-                        <AnimalCards>
-                            {
-                                data.length > 0 ? <AnimalsList
-                                    data={data}
-                                    keyExtractor={item => item.id}
-                                    renderItem={({ item }) => <AnimalCard data={item} />}
-                                /> :
-                                    <EmptyListText>Ainda não existem animais cadastrados.</EmptyListText>
-                            }
+                            </AnimalCards>
 
-                        </AnimalCards>
-                        
-                        <NewPetButton>
+                            <Footer>
+                                <AddPetButton
+                                    title="Cadastrar novo pet"
+                                    onPress={() => navigator.navigate('NovoAnimal')} />
+                            </Footer>
 
-                        </NewPetButton>
+                        </Body>
+
+
                     </>
             }
         </Container>
