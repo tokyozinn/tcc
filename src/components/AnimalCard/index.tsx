@@ -1,6 +1,7 @@
 import React from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
 import CaoSVG from '../../assets/cao.svg';
+import { TouchableOpacityProps } from "react-native";
 import GatoSVG from '../../assets/gato.svg';
 
 import {
@@ -14,16 +15,14 @@ export interface AnimalCardProps {
     specie: 'Cachorro' | 'Gato';
 }
 
-interface Props {
+interface Props extends TouchableOpacityProps {
     data: AnimalCardProps;
 }
 
-
-
-export function AnimalCard({ data }: Props) {
+export function AnimalCard({ data, ...rest }: Props) {
 
     return (
-        <Container>
+        <Container {...rest}>
             <IconImg>
                 {data.specie === 'Cachorro' ?
                     <CaoSVG width={RFValue(50)}

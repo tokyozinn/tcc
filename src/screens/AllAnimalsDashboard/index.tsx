@@ -27,13 +27,14 @@ import theme from "../../global/styles/theme";
 import { useAuth } from "../../hooks/auth";
 import { AnimalCard, AnimalCardProps } from "../../components/AnimalCard";
 import { AddPetButton } from "../../components/AddPetButton";
+import { Button } from "../../components/Form/Button";
 
 export interface AnimalListProps extends AnimalCardProps {
     id: string;
 }
 
 type NavigationProps = {
-    navigate:(screen:string) => void;
+    navigate: (screen: string) => void;
 }
 
 export function AllAnimalsDashboard() {
@@ -102,30 +103,34 @@ export function AllAnimalsDashboard() {
                             </UserWrapper>
                         </Header>
                         <Body>
-                            <AnimalCards>
-                                {
-                                    data.length > 0 ? <AnimalsList
-                                        data={data}
-                                        keyExtractor={item => item.id}
-                                        renderItem={({ item }) => <AnimalCard data={item} />}
-                                    /> :
-                                        <EmptyListText>Ainda não existem animais cadastrados.</EmptyListText>
-                                }
 
-                            </AnimalCards>
+                            {
+                                data.length > 0 ? <AnimalsList
+                                    data={data}
+                                    keyExtractor={item => item.id}
+                                    renderItem={({ item }) =>
+                                        <AnimalCard data={item} onPress={() => navigator.navigate('Dashboard')}
+
+                                        />}
+                                /> :
+                                    <EmptyListText>Ainda não existem animais cadastrados.</EmptyListText>
+                            }
+
+
 
                             <Footer>
-                                <AddPetButton
+                                <Button
+                                    title="Cadastrar Pet"
+                                    onPress={() => navigator.navigate('NovoAnimal')}
+                                />
+                                {/* <AddPetButton 
                                     title="Cadastrar novo pet"
-                                    onPress={() => navigator.navigate('NovoAnimal')} />
+                                    onPress={() => navigator.navigate('NovoAnimal')} /> */}
                             </Footer>
 
                         </Body>
-
-
                     </>
             }
         </Container>
-
     )
 }

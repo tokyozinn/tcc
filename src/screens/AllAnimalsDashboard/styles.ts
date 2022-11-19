@@ -134,4 +134,5 @@ export const Footer = styled.View`
     align-items: center;
     width: 100%;
     height: ${RFValue(275)}px;
+    padding: 24px;
 `;
