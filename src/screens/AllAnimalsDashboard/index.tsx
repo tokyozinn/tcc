@@ -33,22 +33,16 @@ export interface AnimalListProps extends AnimalCardProps {
     id: string;
 }
 
-type NavigationProps = {
-    navigate: (screen: string) => void;
-}
 
 export function AllAnimalsDashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<AnimalListProps[]>([]);
 
-    const navigator = useNavigation<NavigationProps>();
+    const navigator = useNavigation();
 
     const { user } = useAuth();
     const { signOut } = useAuth();
 
-    function handleRegisterClick() {
-        navigator.navigate('NovoAnimal')
-    }
 
     async function loadAllAnimals() {
 
@@ -59,6 +53,7 @@ export function AllAnimalsDashboard() {
         const allAnimalsFormatted: AnimalListProps[] = allAnimals
             .map((pet: AnimalListProps) => {
                 return {
+                    id: pet.id,
                     name: pet.name,
                     specie: pet.specie,
                 }
@@ -82,6 +77,12 @@ export function AllAnimalsDashboard() {
         loadAllAnimals()
     }, []
     ));
+
+    function handleOpenDetails(pet: AnimalListProps) {
+        const name = pet.name; 
+        const id = pet.id; 
+        navigator.navigate('Dashboard' as never, { id, name } as never)
+    }
 
     return (
         <Container>
@@ -109,7 +110,9 @@ export function AllAnimalsDashboard() {
                                     data={data}
                                     keyExtractor={item => item.id}
                                     renderItem={({ item }) =>
-                                        <AnimalCard data={item} onPress={() => navigator.navigate('Dashboard')}
+                                        <AnimalCard
+                                            data={item}
+                                            onPress={() => handleOpenDetails(item)}
 
                                         />}
                                 /> :
@@ -121,7 +124,7 @@ export function AllAnimalsDashboard() {
                             <Footer>
                                 <Button
                                     title="Cadastrar Pet"
-                                    onPress={() => navigator.navigate('NovoAnimal')}
+                                    onPress={() => navigator.navigate('NovoAnimal' as never)}
                                 />
                                 {/* <AddPetButton 
                                     title="Cadastrar novo pet"
