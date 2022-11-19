@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigation, useRoute } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 
 import {
@@ -9,6 +10,7 @@ import {
 } from "./styles";
 import { View } from "react-native";
 import { DashboardCard } from "../../components/DashboardCard";
+import FoodScheduleCard from "../../components/Menu";
 
 type RouteParams = {
     id: string;
@@ -21,11 +23,11 @@ export function Dashboard() {
 
     return (
         <Container>
-            <Header>
-                <Title>
-                    {name}
-                </Title>
-            </Header>
+                <Header>
+                    <Title>
+                        {name}
+                    </Title>
+                </Header>
             <View>
                 <DashboardCard icon="Vacina" title="Vacinas" />
                 <DashboardCard icon="Balanca" title="Controle de Peso" />

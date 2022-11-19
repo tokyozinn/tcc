@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
+import { View, Text, StyleSheet } from 'react-native';
 import {
     Container,
     Header,
@@ -11,7 +13,7 @@ import {
     User,
     UserGreeting,
     UserName,
-    Icon,
+    IconStyle,
     AnimalCards,
     LogoutButton,
     LoadContainer,
@@ -26,8 +28,9 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import theme from "../../global/styles/theme";
 import { useAuth } from "../../hooks/auth";
 import { AnimalCard, AnimalCardProps } from "../../components/AnimalCard";
-import { AddPetButton } from "../../components/AddPetButton";
-import { Button } from "../../components/Form/Button";
+import { ButtonComponent } from "../../components/Form/Button";
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+
 
 export interface AnimalListProps extends AnimalCardProps {
     id: string;
@@ -79,9 +82,23 @@ export function AllAnimalsDashboard() {
     ));
 
     function handleOpenDetails(pet: AnimalListProps) {
-        const name = pet.name; 
-        const id = pet.id; 
+        const name = pet.name;
+        const id = pet.id;
         navigator.navigate('Dashboard' as never, { id, name } as never)
+    }
+
+    function LeftAction(){
+       
+        console.log("oi");
+        return(
+            <View style={styles.leftAction}>
+                 <Icon name="trash-alt" size={25} color="white"/>
+            </View>
+        )
+    }
+
+    function handleLeft(){
+        alert('Animal Excluído');
     }
 
     return (
@@ -99,30 +116,35 @@ export function AllAnimalsDashboard() {
                                     </User>
                                 </UserInfo>
                                 <LogoutButton onPress={() => clearDataBase()}>
-                                    <Icon name="power" />
+                                    <IconStyle name="power" />
                                 </LogoutButton>
                             </UserWrapper>
                         </Header>
                         <Body>
-
                             {
-                                data.length > 0 ? <AnimalsList
-                                    data={data}
-                                    keyExtractor={item => item.id}
-                                    renderItem={({ item }) =>
-                                        <AnimalCard
-                                            data={item}
-                                            onPress={() => handleOpenDetails(item)}
+                                data.length > 0 ?
+                                    <AnimalsList
+                                        data={data}
+                                        keyExtractor={item => item.id}
+                                        renderItem={({ item }) =>
+                                            <Swipeable 
+                                                renderLeftActions={LeftAction}
+                                                onSwipeableLeftOpen={handleLeft}
+                                                >
+                                                <AnimalCard
+                                                    data={item}
+                                                    onPress={() => handleOpenDetails(item)}
 
-                                        />}
-                                /> :
+                                                />
+                                            </Swipeable>
+                                        }
+                                    />
+                                    :
                                     <EmptyListText>Ainda não existem animais cadastrados.</EmptyListText>
                             }
 
-
-
                             <Footer>
-                                <Button
+                                <ButtonComponent
                                     title="Cadastrar Pet"
                                     onPress={() => navigator.navigate('NovoAnimal' as never)}
                                 />
@@ -132,8 +154,25 @@ export function AllAnimalsDashboard() {
                             </Footer>
 
                         </Body>
+
+
                     </>
             }
         </Container>
     )
 }
+
+const styles = StyleSheet.create({
+    leftAction: {
+        backgroundColor: '#e90000',
+        justifyContent: 'center',
+        flex: 1,
+        marginTop: 24,
+        marginRight: 24,
+        marginLeft: 24,
+        borderRadius: 5,
+        paddingLeft: 20,
+    }, actionText: {
+
+    }
+});

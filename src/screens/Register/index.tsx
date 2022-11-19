@@ -12,7 +12,7 @@ import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'
 
-import { Button } from "../../components/Form/Button";
+import { ButtonComponent } from "../../components/Form/Button";
 import { TransactionTypeButton } from "../../components/Form/TransactionTypeButton";
 import { CategorySelectButton } from "../../components/Form/CategorySelectButton";
 import { InputForm } from "../../components/Form/InputForm";
@@ -168,7 +168,7 @@ export function Register() {
                         />
                     </Fields>
 
-                    <Button
+                    <ButtonComponent
                         title="Enviar"
                         onPress={handleSubmit(handleRegister)}
                     />
