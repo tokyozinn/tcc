@@ -88,8 +88,6 @@ export function AllAnimalsDashboard() {
     }
 
     function LeftAction(){
-       
-        console.log("oi");
         return(
             <View style={styles.leftAction}>
                  <Icon name="trash-alt" size={25} color="white"/>
@@ -98,7 +96,19 @@ export function AllAnimalsDashboard() {
     }
 
     function handleLeft(){
-        alert('Animal Excluído');
+        Alert.alert(
+            'Excluir Item',
+            'O item selecionado será removido, deseja continuar?',
+            [
+                { text: "Cancelar", style: 'cancel', onPress: () => { } },
+
+                {
+                    text: 'Excluir',
+                    style: 'destructive',
+                    onPress: () => { }
+                },
+            ]
+        );
     }
 
     return (

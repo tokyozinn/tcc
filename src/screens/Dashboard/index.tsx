@@ -1,5 +1,5 @@
 import React from "react";
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import {
     Container,
@@ -17,6 +17,7 @@ type RouteParams = {
 export function Dashboard() {
     const route = useRoute();
     const { id, name } = route.params as RouteParams;
+    const navigator = useNavigation();
 
     return (
         <Container>
@@ -27,7 +28,7 @@ export function Dashboard() {
                     </Title>
                 </Header>
                 <View>
-                    <DashboardCard icon="Vacina" title="Vacinas" />
+                    <DashboardCard icon="Vacina" title="Medicamentos" onPress={() => navigator.navigate('Vacinas' as never)}/>
                     <DashboardCard icon="Balanca" title="Controle de Peso" />
                 </View>
             </View>
