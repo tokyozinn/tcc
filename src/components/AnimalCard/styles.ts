@@ -10,16 +10,20 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const IconImg = styled.View`
-    flex: 1;
     align-items: center;
     margin: auto 0;
     text-align: center;
+`;
+
+export const Resumo = styled.View`
+    width: 80%;
+    padding-left: 25px;
 `;
 
 export const Title = styled.Text`
     width: 80%;
     text-align: center;
     margin: auto 0;
-    font-size: ${RFValue(20)}px;
-    font-family: ${({ theme }) => theme.fonts.regular};
+    font-size: ${RFValue(25)}px;
+    font-family: ${({ theme }) => theme.fonts.medium};
 `;

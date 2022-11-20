@@ -172,7 +172,5 @@ const styles = StyleSheet.create({
         marginLeft: 24,
         borderRadius: 5,
         paddingLeft: 20,
-    }, actionText: {
-
     }
 });

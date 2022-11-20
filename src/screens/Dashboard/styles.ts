@@ -4,8 +4,11 @@ import { Feather } from '@expo/vector-icons';
 import { getStatusBarHeight } from "react-native-iphone-x-helper";
 
 export const Container = styled.View`
+    flex: 1;
+    justify-content: space-between;
     background-color:  ${({ theme }) => theme.colors.background};
 `;
+
 export const Header = styled.View`
     background-color: ${({ theme }) => theme.colors.primary};
 
@@ -23,3 +26,4 @@ export const Title = styled.Text`
 
     font-size: ${RFValue(25)}px;
 `;
+
