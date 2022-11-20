@@ -14,16 +14,16 @@ export const UpperView = styled.View`
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    background-color: #6C63FF;
+    background-color: ${({ theme }) => theme.colors.primary};
 `;
 
 export const LowerView = styled.View`
     width: 100%;
-    height: ${RFPercentage(40)}px;
+    height: ${RFPercentage(60)}px;
     justify-content: center;
     align-items: flex-start;
     flex-direction: row;
-    background-color: #DB7FB3; 
+    background-color: ${({ theme }) => theme.colors.secondary};
 `;
 
 export const UserWrapper = styled.View`
