@@ -3,7 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import {
     Container,
     Header,
@@ -14,7 +14,6 @@ import {
     UserGreeting,
     UserName,
     IconStyle,
-    AnimalCards,
     LogoutButton,
     LoadContainer,
     EmptyListText,
@@ -178,10 +177,7 @@ export function AllAnimalsDashboard() {
                                     onPress={() => navigator.navigate('NovoAnimal' as never)}
                                 />
                             </Footer>
-
                         </Body>
-
-
                     </>
             }
         </Container>

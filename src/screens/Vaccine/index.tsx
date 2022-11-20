@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
@@ -38,8 +37,6 @@ export function Vaccine() {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<VacineListProps[]>([]);
 
-    console.log(`O id do bicho é ${id}`);
-
     const navigator = useNavigation();
 
     const { user } = useAuth();
@@ -62,8 +59,6 @@ export function Vaccine() {
                 }
             })
         setData(allVaccinesFormatted);
-        console.log(allVaccinesFormatted);
-        console.log(response)
         setIsLoading(false);
     };
 
@@ -89,8 +84,6 @@ export function Vaccine() {
     }
 
     function LeftAction() {
-
-        console.log("oi");
         return (
             <View style={styles.leftAction}>
                 <Icon name="trash-alt" size={25} color="white" />
@@ -98,7 +91,7 @@ export function Vaccine() {
         )
     }
 
-    function handleLeft() {
+    function handleLeft(procedure: VacineListProps) {
         Alert.alert(
             'Excluir Item',
             'O item selecionado será removido, deseja continuar?',
@@ -108,11 +101,27 @@ export function Vaccine() {
                 {
                     text: 'Excluir',
                     style: 'destructive',
-                    onPress: () => { }
+                    onPress: () => { deletar(procedure.id) }
                 },
             ]
         );
     }
+
+
+    async function deletar(idToDelete: string) {
+        try {
+            const usersJSON = await AsyncStorage.getItem(`@petapp:vaccines-${id}`);
+            const usersArray = JSON.parse(usersJSON!);
+            const alteredUsers = usersArray.filter(function (e: VacineListProps) {
+                return e.id !== idToDelete
+            })
+            AsyncStorage.setItem(`@petapp:vaccines-${id}`, JSON.stringify(alteredUsers));
+            loadAllAnimals();
+        }
+        catch (error) {
+            console.log(error)
+        }
+    };
 
     return (
         <Container>
@@ -130,7 +139,7 @@ export function Vaccine() {
                             renderItem={({ item }) =>
                                 <Swipeable
                                     renderLeftActions={LeftAction}
-                                    onSwipeableLeftOpen={handleLeft}
+                                    onSwipeableLeftOpen={() => handleLeft(item)}
                                 >
                                     <VaccineCard
                                         data={item}
@@ -144,7 +153,7 @@ export function Vaccine() {
                 <Footer>
                     <ButtonComponent
                         title="Cadastrar Vacina"
-                        onPress={() => navigator.navigate('ModalVacina' as never, {id} as never)}
+                        onPress={() => navigator.navigate('ModalVacina' as never, { id } as never)}
                     />
                 </Footer>
             </Body>

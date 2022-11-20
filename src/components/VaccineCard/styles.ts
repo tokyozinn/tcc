@@ -9,7 +9,6 @@ export const Container = styled.TouchableOpacity`
 `;
 
 export const Linha = styled.View`
-    flex: 1;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -23,7 +22,6 @@ export const IconImg = styled.View`
 `;
 
 export const IconTitle = styled.View`
-    flex: 1;
     flex-direction: row;
     align-items: center;
 `;

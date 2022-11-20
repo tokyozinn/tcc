@@ -18,7 +18,6 @@ export function Dashboard() {
     const route = useRoute();
     const { id, name } = route.params as RouteParams;
     const navigator = useNavigation();
-    console.log(`OIEEEEEEE ${id} e ${name}`)
 
     return (
         <Container>

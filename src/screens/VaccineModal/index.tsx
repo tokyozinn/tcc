@@ -3,8 +3,7 @@ import {
     Keyboard,
     Modal,
     TouchableWithoutFeedback,
-    Alert,
-    View
+    Alert
 } from "react-native";
 import { useForm } from "react-hook-form";
 import * as Yup from 'yup';
@@ -26,7 +25,7 @@ import {
 } from "./styles";
 
 interface FormData {
-    name: string;
+    nome: string;
     category: 'Medicamento' | 'Vacina';
     date: string;
 }
@@ -80,8 +79,8 @@ export function VaccineModal() {
             return Alert.alert('Selecione a categoria');
         const newProcedure = {
             id: String(uuid.v4()),
-            category: form.category,
-            name: form.name,
+            category: category.name,
+            name: form.nome,
             date: new Date()
         }
 
@@ -95,15 +94,14 @@ export function VaccineModal() {
                 ...currentData,
                 newProcedure
             ]
-            
+
             await AsyncStorage.setItem(allVaccinesCollection, JSON.stringify(appendedData));
-            console.log(`VACCINE MODAL: - BASE ${allVaccinesCollection} E +  ${appendedData}`)
             reset();
             setCategory({
                 key: 'category',
                 name: 'Categoria'
             });
-            navigation.navigate('Listagem');
+            navigation.navigate('Dashboard' as never, { id } as never);
         } catch (error) {
             console.log(error);
             Alert.alert("Não foi possível salvar.");
@@ -121,7 +119,7 @@ export function VaccineModal() {
 
                 <Form>
                     <Fields>
-                        <CategorySelectButton 
+                        <CategorySelectButton
                             title={category.name}
                             onPress={handleOpenSelectCategory}
                         />
@@ -134,13 +132,14 @@ export function VaccineModal() {
                             autoCorrect={false}
                             error={errors.nome?.message}
                         />
-                     
+
                     </Fields>
 
                     <ButtonComponent
                         title="Enviar"
                         onPress={handleSubmit(handleVaccineRegister)}
                     />
+
                 </Form>
                 <Modal visible={categoryModalOpen}>
                     <MedicamentosCategorySelect
