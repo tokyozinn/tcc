@@ -77,6 +77,7 @@ function AuthProvider({ children }: AuthProviderProps) {
             }
             setIsLoading(false);
         }
+        loadUserData() 
     }, []);
 
     return (
