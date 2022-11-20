@@ -15,7 +15,7 @@ import {
 
 } from "./styles";
 import { Alert } from "react-native";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useAuth } from "../../hooks/auth";
 import { VaccineCardProps } from "../../components/VaccineCard";
 import { ButtonComponent } from "../../components/Form/Button";
@@ -27,11 +27,18 @@ export interface VacineListProps extends VaccineCardProps {
     id: string;
 }
 
+type RouteParams = {
+    id: string;
+}
 
 export function Vaccine() {
 
+    const route = useRoute();
+    const { id } = route.params as RouteParams;
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<VacineListProps[]>([]);
+
+    console.log(`O id do bicho é ${id}`);
 
     const navigator = useNavigation();
 
@@ -41,21 +48,22 @@ export function Vaccine() {
 
     async function loadAllAnimals() {
 
-        const collectionKey = '@petapp:animals';
+        const collectionKey = `@petapp:vaccines-${id}`;
         const response = await AsyncStorage.getItem(collectionKey);
-        const allAnimals = response ? JSON.parse(response) : [];
+        const allVaccines = response ? JSON.parse(response) : [];
 
-        const allAnimalsFormatted: VacineListProps[] = allAnimals
-            .map((pet: VacineListProps) => {
+        const allVaccinesFormatted: VacineListProps[] = allVaccines
+            .map((vaccine: VacineListProps) => {
                 return {
-                    id: pet.id,
-                    name: pet.name,
-                    specie: pet.category,
-                    date: pet.date,
+                    id: vaccine.id,
+                    name: vaccine.name,
+                    category: vaccine.category,
+                    date: vaccine.date,
                 }
             })
-        setData(allAnimalsFormatted);
-        console.log(allAnimalsFormatted);
+        setData(allVaccinesFormatted);
+        console.log(allVaccinesFormatted);
+        console.log(response)
         setIsLoading(false);
     };
 
@@ -136,7 +144,7 @@ export function Vaccine() {
                 <Footer>
                     <ButtonComponent
                         title="Cadastrar Vacina"
-                        onPress={() => navigator.navigate('ModalVacina' as never)}
+                        onPress={() => navigator.navigate('ModalVacina' as never, {id} as never)}
                     />
                 </Footer>
             </Body>

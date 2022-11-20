@@ -16,6 +16,7 @@ export interface AnimalCardProps {
     name: string;
     specie: 'Cachorro' | 'Gato';
     weight: number;
+    breed: string,
     age: number;
 }
 
@@ -41,7 +42,7 @@ export function AnimalCard({ data, ...rest }: Props) {
                 </Title>
                 <Text>Peso: {data.weight}</Text>
                 <Text>Idade: {data.age}</Text>
-                <Text>Raça: Pastor Alemão</Text>
+                <Text>Raça: {data.breed}</Text>
             </Resumo>
 
         </Container>

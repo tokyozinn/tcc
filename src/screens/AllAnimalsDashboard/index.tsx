@@ -57,12 +57,14 @@ export function AllAnimalsDashboard() {
             .map((pet: AnimalListProps) => {
                 return {
                     id: pet.id,
+                    weight: pet.weight,
+                    breed: pet.breed,
                     name: pet.name,
+                    age: pet.age,
                     specie: pet.specie,
                 }
             })
         setData(allAnimalsFormatted);
-        console.log(allAnimalsFormatted);
         setIsLoading(false);
     };
 
@@ -87,29 +89,47 @@ export function AllAnimalsDashboard() {
         navigator.navigate('Dashboard' as never, { id, name } as never)
     }
 
-    function LeftAction(){
-        return(
+    function LeftAction() {
+        return (
             <View style={styles.leftAction}>
-                 <Icon name="trash-alt" size={25} color="white"/>
+                <Icon name="trash-alt" size={25} color="white" />
             </View>
         )
     }
 
-    function handleLeft(){
+    function handleLeft(animal: AnimalListProps) {
+        const idToDelete = animal.id;
         Alert.alert(
             'Excluir Item',
             'O item selecionado será removido, deseja continuar?',
             [
-                { text: "Cancelar", style: 'cancel', onPress: () => { } },
+                { text: "Cancelar", style: 'cancel', onPress: () => { loadAllAnimals() } },
 
                 {
                     text: 'Excluir',
                     style: 'destructive',
-                    onPress: () => { }
+                    onPress: () => {
+                        deletar(idToDelete);
+                    }
                 },
             ]
         );
     }
+
+    async function deletar(idToDelete: string) {
+        try {
+            const usersJSON = await AsyncStorage.getItem('@petapp:animals');
+            const usersArray = JSON.parse(usersJSON!);
+            const alteredUsers = usersArray.filter(function (e: AnimalListProps) {
+                return e.id !== idToDelete
+            })
+            AsyncStorage.setItem('@petapp:animals', JSON.stringify(alteredUsers));
+            loadAllAnimals();
+        }
+        catch (error) {
+            console.log(error)
+        }
+    };
 
     return (
         <Container>
@@ -137,14 +157,13 @@ export function AllAnimalsDashboard() {
                                         data={data}
                                         keyExtractor={item => item.id}
                                         renderItem={({ item }) =>
-                                            <Swipeable 
+                                            <Swipeable
                                                 renderLeftActions={LeftAction}
-                                                onSwipeableLeftOpen={handleLeft}
-                                                >
+                                                onSwipeableLeftOpen={() => handleLeft(item)}
+                                            >
                                                 <AnimalCard
                                                     data={item}
                                                     onPress={() => handleOpenDetails(item)}
-
                                                 />
                                             </Swipeable>
                                         }
@@ -158,9 +177,6 @@ export function AllAnimalsDashboard() {
                                     title="Cadastrar Pet"
                                     onPress={() => navigator.navigate('NovoAnimal' as never)}
                                 />
-                                {/* <AddPetButton 
-                                    title="Cadastrar novo pet"
-                                    onPress={() => navigator.navigate('NovoAnimal')} /> */}
                             </Footer>
 
                         </Body>

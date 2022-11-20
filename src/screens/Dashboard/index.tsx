@@ -18,6 +18,7 @@ export function Dashboard() {
     const route = useRoute();
     const { id, name } = route.params as RouteParams;
     const navigator = useNavigation();
+    console.log(`OIEEEEEEE ${id} e ${name}`)
 
     return (
         <Container>
@@ -28,7 +29,7 @@ export function Dashboard() {
                     </Title>
                 </Header>
                 <View>
-                    <DashboardCard icon="Vacina" title="Medicamentos" onPress={() => navigator.navigate('Vacinas' as never)}/>
+                    <DashboardCard icon="Vacina" title="Medicamentos" onPress={() => navigator.navigate('Vacinas' as never, {id, name} as never)}/>
                     <DashboardCard icon="Balanca" title="Controle de Peso" />
                 </View>
             </View>

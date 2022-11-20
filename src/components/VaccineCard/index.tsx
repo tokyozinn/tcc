@@ -47,7 +47,7 @@ export function VaccineCard({ data, ...rest }: Props) {
                                 <VacinaSVG width={RFValue(25)}
                                     height={RFValue(25)} />}
                         </IconImg>
-                        <Text>Vacina</Text>
+                        <Text>{data.category}</Text>
                     </IconTitle>
                     <Text>Data: {data.date}</Text>
                 </Linha>

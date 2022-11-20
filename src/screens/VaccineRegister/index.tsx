@@ -29,6 +29,7 @@ interface FormData {
     name: string;
     age: number;
     weight: number;
+    breed: string;
     specie: 'Gato' | 'Cachorro';
 }
 
@@ -38,7 +39,8 @@ type NavigationProps = {
 
 const schema = Yup.object().shape({
     name: Yup.string()
-        .required('Nome é obrigatório'),
+        .required('Nome é obrigatório')
+        .max(15, 'Número máximo de caracteres: 15'),
     age: Yup.number().integer("Idade deve ser um número inteiro")
         .typeError('Informe um valor numérico')
         .positive('O valor não pode ser negativo')
@@ -89,11 +91,10 @@ export function VaccineRegister() {
             id: String(uuid.v4()),
             name: form.name,
             age: form.age,
+            breed: form.breed,
             specie: category.key,
             weight: form.weight,
         }
-
-
 
         const allAnimalsCollection = `@petapp:animals`;
 

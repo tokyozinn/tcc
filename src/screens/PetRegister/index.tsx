@@ -3,17 +3,15 @@ import {
     Keyboard,
     Modal,
     TouchableWithoutFeedback,
-    Alert,
-    View
-} from "react-native";
+    Alert} from "react-native";
 import { useForm } from "react-hook-form";
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 
-import { ButtonComponent } from "../../components/Form/Button";
+import { Button } from "../../components/Form/Button";
 import { CategorySelectButton } from "../../components/Form/CategorySelectButton";
 import { InputForm } from "../../components/Form/InputForm";
 
@@ -27,33 +25,38 @@ import {
 
 interface FormData {
     name: string;
-    category: 'Medicamento' | 'Vacina';
-    date: string;
+    age: number;
+    weight: number;
+    specie: 'Gato' | 'Cachorro';
 }
 
 type NavigationProps = {
     navigate: (screen: string) => void;
 }
 
-type RouteParams = {
-    id: string;
-}
-
 const schema = Yup.object().shape({
-    nome: Yup.string()
-        .required('Campo obrigatório'),
+    name: Yup.string()
+        .required('Nome é obrigatório'),
+    age: Yup.number().integer("Idade deve ser um número inteiro")
+        .typeError('Informe um valor numérico')
+        .positive('O valor não pode ser negativo')
+        .required('O valor é obrigatório'),
+    breed: Yup.string()
+        .required('Raça é obrigatório'),
+    weight: Yup.number()
+        .typeError('Informe um valor numérico')
+        .positive('O valor não pode ser negativo')
+        .required('O valor é obrigatório'),
 });
 
-import { MedicamentosCategorySelect } from "../MedicamentosCategorySelect";
+import { VaccineCategorySelect } from "../VaccineCategorySelect";
 
-export function VaccineModal() {
-    const route = useRoute();
-    const { id } = route.params as RouteParams;
+export function PetRegister() {
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
     const [category, setCategory] = useState({
         key: 'category',
-        name: 'Categoria',
+        name: 'Espécies',
     });
 
     const navigation = useNavigation<NavigationProps>();
@@ -73,37 +76,44 @@ export function VaccineModal() {
 
     function handleCloseSelectCategory() {
         setCategoryModalOpen(false);
-    }
+    }   
 
-    async function handleVaccineRegister(form: Partial<FormData>) {
+    async function handlePetRegister(form: Partial<FormData>) {
         if (category.key === 'category')
             return Alert.alert('Selecione a categoria');
-        const newProcedure = {
+        const newAnimal = {
             id: String(uuid.v4()),
-            category: form.category,
             name: form.name,
-            date: new Date()
+            age: form.age,
+            specie: category.key,
+            weight: form.weight,
         }
 
-        const allVaccinesCollection = `@petapp:vaccines-${id}`;
+        const allAnimalsCollection = `@petapp:animals`;
+        const individualAnimalCollection = `@petapp:${newAnimal.id}`;
+
+        console.log(newAnimal);
 
         try {
-            const allVacinesStored = await AsyncStorage.getItem(allVaccinesCollection);
-            const currentData = allVacinesStored ? JSON.parse(allVacinesStored) : [];
+            const generalAnimalRecordData = await AsyncStorage.getItem(allAnimalsCollection);
+            const currentData = generalAnimalRecordData ? JSON.parse(generalAnimalRecordData) : [];
 
             const appendedData = [
                 ...currentData,
-                newProcedure
+                newAnimal
             ]
             
-            await AsyncStorage.setItem(allVaccinesCollection, JSON.stringify(appendedData));
-            console.log(`VACCINE MODAL: - BASE ${allVaccinesCollection} E +  ${appendedData}`)
+            await AsyncStorage.setItem(allAnimalsCollection, JSON.stringify(appendedData));
+            await AsyncStorage.setItem(individualAnimalCollection, JSON.stringify(newAnimal));
+
             reset();
             setCategory({
                 key: 'category',
                 name: 'Categoria'
             });
+
             navigation.navigate('Listagem');
+
         } catch (error) {
             console.log(error);
             Alert.alert("Não foi possível salvar.");
@@ -115,35 +125,57 @@ export function VaccineModal() {
             <Container>
                 <Header>
                     <Title>
-                        Cadastrar Medicamento
+                        Cadastrar Pet
                     </Title>
                 </Header>
 
                 <Form>
                     <Fields>
+                        <InputForm
+                            name="name"
+                            control={control}
+                            placeholder="Nome"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            error={errors.name?.message}
+                        />
+                        <InputForm
+                            name="age"
+                            control={control}
+                            placeholder="Idade"
+                            keyboardType="number-pad"
+                            error={errors.age?.message}
+                        />
+
                         <CategorySelectButton 
                             title={category.name}
                             onPress={handleOpenSelectCategory}
                         />
 
                         <InputForm
-                            name="nome"
+                            name="breed"
                             control={control}
-                            placeholder="Nome do Medicamento"
+                            placeholder="Raça"
                             autoCapitalize="words"
                             autoCorrect={false}
-                            error={errors.nome?.message}
+                            error={errors.breed?.message}
                         />
-                     
+                        <InputForm
+                            name="weight"
+                            control={control}
+                            placeholder="Peso"
+                            keyboardType="number-pad"
+                            error={errors.weight?.message}
+                        />
                     </Fields>
 
-                    <ButtonComponent
+                    <Button
                         title="Enviar"
-                        onPress={handleSubmit(handleVaccineRegister)}
+                        onPress={handleSubmit(handlePetRegister)}
                     />
                 </Form>
                 <Modal visible={categoryModalOpen}>
-                    <MedicamentosCategorySelect
+                    <VaccineCategorySelect
                         category={category}
                         setCategory={setCategory}
                         closeSelectCategory={handleCloseSelectCategory}
