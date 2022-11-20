@@ -63,6 +63,7 @@ export function Vaccine() {
                     date: date,
                 }
             })
+            console.log(allVaccines);
         setData(allVaccinesFormatted);
         setIsLoading(false);
     };
