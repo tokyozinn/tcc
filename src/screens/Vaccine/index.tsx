@@ -51,11 +51,16 @@ export function Vaccine() {
 
         const allVaccinesFormatted: VacineListProps[] = allVaccines
             .map((vaccine: VacineListProps) => {
+                const date = Intl.DateTimeFormat('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
+                }).format(new Date(vaccine.date))
                 return {
                     id: vaccine.id,
                     name: vaccine.name,
                     category: vaccine.category,
-                    date: vaccine.date,
+                    date: date,
                 }
             })
         setData(allVaccinesFormatted);
