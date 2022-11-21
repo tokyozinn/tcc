@@ -101,7 +101,7 @@ export function VaccineModal() {
                 key: 'category',
                 name: 'Categoria'
             });
-            navigation.navigate('Dashboard' as never, { id } as never);
+            navigation.navigate('Dashboard', { id } as never);
         } catch (error) {
             console.log(error);
             Alert.alert("Não foi possível salvar.");

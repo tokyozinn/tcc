@@ -42,28 +42,27 @@ export function Weight() {
     const { signOut } = useAuth();
 
 
-    async function loadAllAnimals() {
+    async function loadAllWeights() {
 
-        const collectionKey = `@petapp:vaccines-${id}`;
+        const collectionKey = `@petapp:weight-${id}`;
         const response = await AsyncStorage.getItem(collectionKey);
-        const allVaccines = response ? JSON.parse(response) : [];
+        const allWeight = response ? JSON.parse(response) : [];
 
-        const allVaccinesFormatted: WeightListProps[] = allVaccines
-            .map((vaccine: WeightListProps) => {
+        const allWeightFormatted: WeightListProps[] = allWeight
+            .map((weight: WeightListProps) => {
                 const date = Intl.DateTimeFormat('pt-BR', {
                     day: '2-digit',
                     month: '2-digit',
                     year: '2-digit'
-                }).format(new Date(vaccine.date))
+                }).format(new Date(weight.date))
                 return {
-                    id: vaccine.id,
-                    name: vaccine.name,
-                    category: vaccine.category,
+                    id: weight.id,
+                    weight: weight.weight,
                     date: date,
                 }
             })
-            console.log(allVaccines);
-        setData(allVaccinesFormatted);
+            console.log(allWeight);
+        setData(allWeightFormatted);
         setIsLoading(false);
     };
 
@@ -74,17 +73,17 @@ export function Weight() {
     }
 
     useEffect(() => {
-        loadAllAnimals();
+        loadAllWeights();
     }, []);
 
     useFocusEffect(useCallback(() => {
-        loadAllAnimals()
+        loadAllWeights()
     }, []
     ));
 
-    function handleOpenDetails(pet: WeightListProps) {
-        const name = pet.name;
-        const id = pet.id;
+    function handleOpenDetails(weight: WeightListProps) {
+        const name = weight.weight;
+        const id = weight.id;
         navigator.navigate('Dashboard' as never, { id, name } as never)
     }
 
@@ -96,7 +95,7 @@ export function Weight() {
         )
     }
 
-    function handleLeft(procedure: WeightListProps) {
+    function handleLeft(weight: WeightListProps) {
         Alert.alert(
             'Excluir Item',
             'O item selecionado será removido, deseja continuar?',
@@ -106,7 +105,7 @@ export function Weight() {
                 {
                     text: 'Excluir',
                     style: 'destructive',
-                    onPress: () => { deletar(procedure.id) }
+                    onPress: () => { deletar(weight.id) }
                 },
             ]
         );
@@ -115,13 +114,13 @@ export function Weight() {
 
     async function deletar(idToDelete: string) {
         try {
-            const usersJSON = await AsyncStorage.getItem(`@petapp:vaccines-${id}`);
-            const usersArray = JSON.parse(usersJSON!);
-            const alteredUsers = usersArray.filter(function (e: WeightListProps) {
+            const weightJSON = await AsyncStorage.getItem(`@petapp:weight-${id}`);
+            const weightArray = JSON.parse(weightJSON!);
+            const alteredWieghts = weightArray.filter(function (e: WeightListProps) {
                 return e.id !== idToDelete
             })
-            AsyncStorage.setItem(`@petapp:vaccines-${id}`, JSON.stringify(alteredUsers));
-            loadAllAnimals();
+            AsyncStorage.setItem(`@petapp:weight-${id}`, JSON.stringify(alteredWieghts));
+            loadAllWeights();
         }
         catch (error) {
             console.log(error)
@@ -153,7 +152,7 @@ export function Weight() {
                             }
                         />
                         :
-                        <EmptyListText>Ainda não existem animais cadastrados.</EmptyListText>
+                        <EmptyListText>Ainda não existem pesagens cadastradas.</EmptyListText>
                 }
                 <Footer>
                     <ButtonComponent

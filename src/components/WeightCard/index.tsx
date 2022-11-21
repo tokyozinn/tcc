@@ -16,8 +16,7 @@ import {
 
 
 export interface WeightCardProps {
-    name: string;
-    category: 'Medicamento' | 'Vacina';
+    weight: string;
     date: string;
 }
 
@@ -38,7 +37,7 @@ export function WeightCard({ data, ...rest }: Props) {
                                     height={RFValue(25)} />
                                
                         </IconImg>
-                        <Text>50 Kilos</Text>
+                        <Text>{data.weight}</Text>
                     </IconTitle>
                     <Text>Data: {data.date}</Text>
                 </Linha>

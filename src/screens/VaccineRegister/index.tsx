@@ -3,8 +3,7 @@ import {
     Keyboard,
     Modal,
     TouchableWithoutFeedback,
-    Alert,
-    View
+    Alert
 } from "react-native";
 import { useForm } from "react-hook-form";
 import * as Yup from 'yup';
@@ -82,8 +81,6 @@ export function VaccineRegister() {
         setCategoryModalOpen(false);
     }
 
-    
-
     async function handleVaccineRegister(form: Partial<FormData>) {
         if (category.key === 'category')
             return Alert.alert('Selecione a categoria');
@@ -108,8 +105,7 @@ export function VaccineRegister() {
                 ...currentData,
                 newAnimal
             ]
-            // if(generalAnimalRecordData) throw new Error(`Animal com nome "${newAnimal.name}" já existe. Por favor, cadastre com um nome diferente`);
-            
+
             await AsyncStorage.setItem(allAnimalsCollection, JSON.stringify(appendedData));
 
             reset();
@@ -153,7 +149,7 @@ export function VaccineRegister() {
                             error={errors.age?.message}
                         />
 
-                        <CategorySelectButton 
+                        <CategorySelectButton
                             title={category.name}
                             onPress={handleOpenSelectCategory}
                         />

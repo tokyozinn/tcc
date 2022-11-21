@@ -23,8 +23,7 @@ import {
 } from "./styles";
 
 interface FormData {
-    nome: string;
-    category: 'Medicamento' | 'Vacina';
+    weight: string;
     date: string;
 }
 
@@ -73,27 +72,24 @@ export function WeightModal() {
     }
 
     async function handleVaccineRegister(form: Partial<FormData>) {
-        if (category.key === 'category')
-            return Alert.alert('Selecione a categoria');
-        const newProcedure = {
+        const newWeight = {
             id: String(uuid.v4()),
-            category: category.name,
-            name: form.nome,
+            weight: form.weight,
             date: new Date()
         }
 
-        const allVaccinesCollection = `@petapp:vaccines-${id}`;
+        const allWeightCollection = `@petapp:weight-${id}`;
 
         try {
-            const allVacinesStored = await AsyncStorage.getItem(allVaccinesCollection);
-            const currentData = allVacinesStored ? JSON.parse(allVacinesStored) : [];
+            const allWeightStored = await AsyncStorage.getItem(allWeightCollection);
+            const currentData = allWeightStored ? JSON.parse(allWeightStored) : [];
 
             const appendedData = [
                 ...currentData,
-                newProcedure
+                newWeight
             ]
 
-            await AsyncStorage.setItem(allVaccinesCollection, JSON.stringify(appendedData));
+            await AsyncStorage.setItem(allWeightCollection, JSON.stringify(appendedData));
             reset();
             setCategory({
                 key: 'category',

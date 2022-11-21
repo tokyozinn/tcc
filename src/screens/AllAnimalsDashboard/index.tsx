@@ -144,7 +144,7 @@ export function AllAnimalsDashboard() {
                                         <UserName>{user.name}</UserName>
                                     </User>
                                 </UserInfo>
-                                <LogoutButton onPress={() => clearDataBase()}>
+                                <LogoutButton onPress={() => signOut()}>
                                     <IconStyle name="power" />
                                 </LogoutButton>
                             </UserWrapper>
