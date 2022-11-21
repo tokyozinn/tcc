@@ -29,7 +29,7 @@ export function Dashboard() {
                 </Header>
                 <View>
                     <DashboardCard icon="Vacina" title="Medicamentos" onPress={() => navigator.navigate('Vacinas' as never, {id, name} as never)}/>
-                    <DashboardCard icon="Balanca" title="Controle de Peso" />
+                    <DashboardCard icon="Balanca" title="Controle de Peso" onPress={() => navigator.navigate('Peso' as never, {id, name} as never)}/>
                 </View>
             </View>
         </Container>

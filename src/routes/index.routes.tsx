@@ -7,6 +7,8 @@ import { VaccineRegister } from "../screens/VaccineRegister";
 import { Dashboard } from "../screens/Dashboard";
 import { Vaccine } from "../screens/Vaccine";
 import { VaccineModal } from "../screens/VaccineModal";
+import { WeightModal } from "../screens/WeightModal";
+import { Weight } from "../screens/Weight";
 
 export function IndexRoutes() {
     return (
@@ -34,6 +36,14 @@ export function IndexRoutes() {
             <Screen
                 name="ModalVacina"
                 component={VaccineModal}
+                />
+            <Screen
+                name="Peso"
+                component={Weight}
+                />
+            <Screen
+                name="ModalPeso"
+                component={WeightModal}
                 />
         </Navigator>
     )
